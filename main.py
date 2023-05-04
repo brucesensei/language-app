@@ -4,6 +4,8 @@ import sys
 import pyperclip as pc
 from time import sleep
 from datetime import datetime
+import random
+
 
 def get_data(file_name):
   """retrieve JSON object and return a python dictionary"""
@@ -66,15 +68,31 @@ def display_options():
 |________________________________________________|
         ''')
 
-def get_user_choice(display_list):
-  """Get the choice from the user"""
+
+
+
+
+def get_user_choice(menu, extra_options=[]):
+  """Get the choice from the user"""  
   while True:
-    valid_choices = [str(i+1) for i in range(len(display_list))]
-    valid_choices.extend(['a', 'r', 'q'])
+    valid_choices = [str(i+1) for i in range(len(menu))]
+    valid_choices.extend(extra_options)
     user_choice = input('Choose one. ')
     if user_choice not in valid_choices:
       continue
     return user_choice
+
+
+  
+def menu(options):
+  counter = 1
+  for option in options:
+    print(f'''{counter}   {option}''')
+    counter += 1
+
+# menu(['Enter English while viewing Spanish','Enter Spanish wile viewing English', 'return to main menu'])
+
+  
 
 def display_learning_module(user_choice, display_list, spanish_dict):
   """Display the learning module title and justified list of vocabulary"""
@@ -107,13 +125,91 @@ def remove_lesson(display_list):
     json.dump(spanish_dict, outfile, indent=2)
   print(f"{to_remove} has been removed.")
 
+
+
+
+# -------------------------------YOU'VE GONE TOO FAR-------------------------------
+
+def practice_vocab(user_choice, display_list, spanish_dict, again=[], reverse_dic=False):
+  # get the key from the display list to fetch the correct dictionary and store it in practice_dict
+  lesson = display_list[int(user_choice) - 1]
+  practice_dict = spanish_dict[lesson]
+  
+  # remove metadata if present
+  if 'last_visited' in practice_dict:
+    del practice_dict['last_visited']
+  if 'times_visited' in practice_dict:
+    del practice_dict['times_visited']
+  
+  # if review list is empty, allow language choice. otherwise option is not available.
+  if len(again) == 0:
+    
+    # get language choice from the user
+    language_choices = ['Type Spanish words', 'type English words']
+    menu(language_choices)
+    reverse_choice = get_user_choice(language_choices)
+    
+    # reverse the dictionary
+    if reverse_choice == '1':
+      reverse_dic = True
+  if reverse_dic:
+    reversed = {}
+    for k, v in practice_dict.items():
+      reversed[v] = k
+    practice_dict = reversed
+  
+  # instantiate lists
+  review_list = []   # missed words !! must hold Keys not values
+  correct_list = []  # correct words!! must hold keys not values
+  review_again = []  # list to use for follow up review training session
+  correct = 0        # display correct count to the user
+  
+  
+  practice_list  = list(practice_dict.keys())
+  if len(again) != 0:
+    training_data = again # this needs to hold the keys. I am sending it the values!!!
+  else:
+    training_data = practice_list
+  while len(training_data) != 0:
+    target = random.choice(training_data)
+    print(practice_dict)  # check to see if I am getting a dictionary on the second run.
+    print(target)
+    answer = input()
+    if answer == practice_dict[target]: # should be training data ¿no?
+      print(f'\nCorrect    Words remaining: {len(training_data) - 1}')
+      correct_list.append(target)
+      correct += 1
+    else:
+      print(f'\nThe correct answer is: {practice_dict[target]}    Words remaining: {len(training_data) - 1}')
+      review_list.append(target)
+    training_data.remove(target)
+  print(f'\nTraining sessoin complete.   {correct}  of {len(review_list) + len(correct_list)}  correct.')
+  if len(review_list) != 0:
+    print('\nWords for review')
+    review_list = list(set(review_list))
+    for i in review_list:
+      print(i + ' ' + '.' * (80 - len(i) - len(practice_dict[i])) + ' ' + practice_dict[i] + '\n')
+  if len(review_list) != 0:
+    review = ['Review again', 'return to lesson']
+    menu(review)
+    review_choice = get_user_choice(review)
+    if review_choice == '1':
+      correct_list = list(set(correct_list))
+      review_again.extend(review_list)
+      review_again.extend(review_list)
+      review_again.extend(correct_list)
+      random.shuffle(review_again)
+      practice_vocab(user_choice, display_list, spanish_dict, review_again, reverse_dic)
+  
+
+
 def main():
   while True:
     spanish_dict = get_data('learning.json')
     display_list = list(spanish_dict.keys())
     display_lessons(display_list, spanish_dict)
     display_options()
-    user_choice = get_user_choice(display_list)
+    user_choice = get_user_choice(display_list, ['a', 'r', 'q'])
     if user_choice == 'r':
       remove_lesson(display_list)
       continue
@@ -125,14 +221,19 @@ def main():
       sleep(2)
       sys.exit()
     display_learning_module(user_choice, display_list, spanish_dict)
-    review = input('To go back press "g". Otherwise, press any other key to quit ')
+    menu_options_2 = ['Practice unit', 'Return to main menu', 'quit']
+    menu(menu_options_2)
+    user_choice_1 = get_user_choice(menu_options_2)
     update_learning_data(user_choice, display_list, spanish_dict)
-    if review == 'g':
+    if user_choice_1 == '2':
       continue
-    print('You are now leaving the land of learning.')
-    sleep(2)
-    sys.exit()
-
+    if user_choice_1 == '3':
+      print('You are now leaving the land of learning.')
+      sleep(2)
+      sys.exit()
+    if user_choice_1 == '1':
+      practice_vocab(user_choice, display_list, spanish_dict, again=[])
+      continue
   
 if __name__ == '__main__':
   main()

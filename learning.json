@@ -49,7 +49,9 @@
     "la discoteca": "the club",
     "pijo": "posh; fancy",
     "cutre": "shabby; grotty",
-    "de moda": "trendy; hip"
+    "de moda": "trendy; hip",
+    "last_visited": "2023-05-04-11-36-54",
+    "times_visited": 7
   },
   "saying where you live": {
     "vivir": "to live",
@@ -224,7 +226,9 @@
     "el invierno": "the winter",
     "el verano": "the summer",
     "la primavera": "the spring",
-    "el oto\u00f1o": "the autumn"
+    "el oto\u00f1o": "the autumn",
+    "last_visited": "2023-05-04-14-04-32",
+    "times_visited": 16
   },
   "interests 1": {
     "\u00bfqu\u00e9 os interesa?": "what are you guys interested in?",
