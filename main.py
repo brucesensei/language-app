@@ -28,21 +28,7 @@ def create_dict(new_data):
     i += 2
   return new_dict
 
-def add_lesson():
-  null_value = input('Copy data to the clipboard and press enter.')
-  new_entry = pc.paste()
-  with io.open('new_data.txt','w',encoding='utf8') as f:
-      f.write(new_entry)
-  with io.open('new_data.txt','r',encoding='utf8') as f:
-      data = f.read()
-  data = data.split('\n')
-  new_data = [i for i in data if i != '']
-  new_dict = create_dict(new_data)
-  lesson_data = get_data('learning.json')
-  title = input('Enter the unit title: \n')
-  lesson_data[title] = new_dict
-  write_data('learning.json', lesson_data)
-  
+
 #------------------------------DISPLAY FUNCTIONS------------------------------------ #
 
 def display_lessons(title, display_list, dictionary):
@@ -65,15 +51,7 @@ def display_lessons(title, display_list, dictionary):
     counter += 1
 
 
-def display_options(options):
-  print()
-  for i in options:
-    print(i)
-
-# ----------------------------MENU AND USER INPUT FUNCTIONS---------------------------------- #
-
-def get_user_choice(option_list):
-  """takes a menu list and optionaly a list of extras and returns the user choice"""  
+def get_user_choice(option_list):  
   while True:
     valid_choices = [str(i+1) for i in range(len(option_list))]
     user_choice = input('Choose an option ')
@@ -81,7 +59,7 @@ def get_user_choice(option_list):
       continue
     return user_choice
 
-# menu is dead!! replace all instances with display options
+
 
 def menu(options, title=''):
   """reusable menu function that takes the menu options as a list"""
@@ -98,8 +76,7 @@ def menu(options, title=''):
     for option in options:
       print(f'''{counter}   {option}''')
       counter += 1
-    
-#--------------------------MAIN LOGIC--------------------------------------- #
+
 
 def display_learning_module(user_choice, display_list, spanish_dict):
   """Display the learning module title and justified list of vocabulary"""
@@ -131,18 +108,16 @@ def update_learning_data(user_choice, display_list, spanish_dict):
 
 
 
-def remove_lesson(display_list):
+def remove_lesson(user_choice, display_list):
   user_choice = get_user_choice(display_list)
-  spanish_dict = get_data('learning.json')
-  display_list = list(spanish_dict.keys())
+  archive_dict = get_data('archive.json')
+  display_list = list(archive_dict.keys())
   to_remove = display_list[int(user_choice) - 1]
-  del spanish_dict[to_remove]
-  with open("learning.json", "w") as outfile:
-    json.dump(spanish_dict, outfile, indent=2)
+  del archive_dict[to_remove]
+  with open("archive.json", "w") as outfile:
+    json.dump(archive_dict, outfile, indent=2)
   print(f"{to_remove} has been removed.")
-
-
-
+  sleep(1)
 
 # -------------------------------practice vacabulary----------------------------------------- #
 
@@ -227,13 +202,16 @@ def practice_vocab(dictionary, again=[], reversed=''):
     practice_vocab(dictionary)
 
 
+
+# --------------------------------------MAIN FUNCTIONS------------------------------------------
+
 def choose_lesson():
     spanish_dict = get_data('learning.json')
     display_list = list(spanish_dict.keys())
     display_lessons('spanish lessons', display_list, spanish_dict)
     user_choice = get_user_choice(display_list)
-    display_learning_module(user_choice, display_list, spanish_dict)  # display the lesson
-    update_learning_data(user_choice, display_list, spanish_dict)  # update lesson metadata
+    display_learning_module(user_choice, display_list, spanish_dict)
+    update_learning_data(user_choice, display_list, spanish_dict)
     lesson_options = ['Practice unit', 'Return to main menu']
     menu(lesson_options,title='')
     lesson_choice = get_user_choice(lesson_options)
@@ -241,51 +219,92 @@ def choose_lesson():
       dictionary = get_sanitized_lesson(user_choice, display_list, spanish_dict)
       practice_vocab(dictionary, again=[])
       
+def view_archive():
+  archive_dict = get_data('archive.json')
+  display_list = list(archive_dict.keys())
+  display_lessons('archived lessons', display_list, archive_dict)
+  lesson_options = ['Return to main menu']
+  menu(lesson_options,title='')
+  lesson_choice = get_user_choice(lesson_options)
+
 def archive_lesson():
   spanish_dict = get_data('learning.json')
   display_list = list(spanish_dict.keys())
   display_lessons('choose a lesson to archive', display_list, spanish_dict)
   user_choice = get_user_choice(display_list)
   lesson = display_list[int(user_choice) - 1]
-  print('lesson: ', lesson)
   archivalbe_lesson = spanish_dict[lesson]
-  print('archivable_lesson: ', archivalbe_lesson)
   del spanish_dict[lesson]
   archive_dict = get_data('archive.json') 
   archive_dict[lesson] = archivalbe_lesson
   with io.open('archive.json', 'w', encoding='utf8') as outfile:
-      json.dump(spanish_dict, outfile, indent=2)
+      json.dump(archive_dict, outfile, indent=2)
   with io.open('learning.json', 'w', encoding='utf8') as outfile:
-      json.dump(spanish_dict, outfile, indent=2)  
+      json.dump(spanish_dict, outfile, indent=2)
+  print(f'{lesson.upper()}  has been moved to the archive folder')
+  sleep(1)  
     
-  
-def add_lesson():
-  pass
+def restore_lesson():
+  spanish_dict = get_data('learning.json')
+  archive_dict = get_data('archive.json') 
+  display_list = list(archive_dict.keys())
+  display_lessons('choose a lesson to restore', display_list, archive_dict)
+  user_choice = get_user_choice(display_list)
+  lesson = display_list[int(user_choice) - 1]
+  restoralbe_lesson = archive_dict[lesson]
+  del archive_dict[lesson]
+  spanish_dict[lesson] = restoralbe_lesson
+  with io.open('archive.json', 'w', encoding='utf8') as outfile:
+      json.dump(archive_dict, outfile, indent=2)
+  with io.open('learning.json', 'w', encoding='utf8') as outfile:
+      json.dump(spanish_dict, outfile, indent=2)
+  print(f'{lesson.upper()}  has been restored to the main list')
+  sleep(1)  
 
+def add_lesson():
+  null_value = input('Copy data to the clipboard and press enter.')
+  new_entry = pc.paste()
+  with io.open('new_data.txt','w',encoding='utf8') as f:
+      f.write(new_entry)
+  with io.open('new_data.txt','r',encoding='utf8') as f:
+      data = f.read()
+  data = data.split('\n')
+  new_data = [i for i in data if i != '']
+  new_dict = create_dict(new_data)
+  lesson_data = get_data('learning.json')
+  title = input('Enter the unit title: \n')
+  lesson_data[title] = new_dict
+  write_data('learning.json', lesson_data)
+  print('Lesson has been added')
+  sleep(1)  
 
 def delete_lesson():
-  spanish_dict = get_data('learning.json')
-  display_list = list(spanish_dict.keys())
-  display_lessons('spanish lessons', display_list, spanish_dict)
+  archive_dict = get_data('archive.json')
+  display_list = list(archive_dict.keys())
+  display_lessons('choose a lesson to delete', display_list, archive_dict)
   user_choice = get_user_choice(display_list)
-
+  remove_lesson(user_choice, display_list)
 
 def quit_app():
-  pass
+  print('You are now leaving the land of learning')
+  sleep(1)
+  sys.exit()
 
 
 choices = {
   '1': choose_lesson,
-  '2': archive_lesson,
-  '3': add_lesson,
-  '4': delete_lesson,
-  '5': quit_app
+  '2': view_archive,
+  '3': archive_lesson,
+  '4': restore_lesson,
+  '5': add_lesson,
+  '6': delete_lesson,
+  '7': quit_app
 }
 
 
 def main():
   while True:
-    menu_options = ['Choose a lesson', 'Archive a lesson', 'Add a lesson', 'Delete a lesson', 'Quit']
+    menu_options = ['Choose a lesson', 'View archive', 'Archive a lesson', 'Restore a lesson', 'Add a lesson', 'Delete a lesson', 'Quit']
     menu(menu_options, 'main menu')
     user_choice = get_user_choice(menu_options)
     option = choices.get(user_choice)

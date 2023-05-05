@@ -102,9 +102,7 @@
     "\u00a1qu\u00e9 calor!": "it is hot!",
     "\u00a1socorro!": "help!",
     "el ba\u00f1o": "the toilet",
-    "el papel higi\u00e9nico": "the toilet paper",
-    "last_visited": "2023-05-05-15-12-07",
-    "times_visited": 1
+    "el papel higi\u00e9nico": "the toilet paper"
   },
   "verb practice": {
     "somos": "we are",
@@ -128,9 +126,7 @@
     "los lunes est\u00e1 cerrado": "it's closed on Mondays",
     "por la ma\u00f1ana": "in the morning",
     "por la tarde": "in the afternoon",
-    "est\u00e1 abierto de 9 a 6": "it's open from 9 to 6",
-    "last_visited": "2023-05-05-15-37-30",
-    "times_visited": 3
+    "est\u00e1 abierto de 9 a 6": "it's open from 9 to 6"
   },
   "local tips": {
     "\u00bfhay descuento?": "is there a discount?",
@@ -146,9 +142,7 @@
     "los carteristas": "the pickpocketers",
     "\u00a1cuidado!": "watch out!",
     "cuidado con los carteristas": "beware of pickpocketers",
-    "ten cuidado": "be careful",
-    "last_visited": "2023-05-05-15-43-35",
-    "times_visited": 1
+    "ten cuidado": "be careful"
   },
   "we can": {
     "poder": "be able to",
@@ -157,7 +151,9 @@
     "pod\u00e9is": "you guys can",
     "puede": "he/she can",
     "podemos": "we can",
-    "pueden": "they can"
+    "pueden": "they can",
+    "last_visited": "2023-05-05-20-35-21",
+    "times_visited": 1
   },
   "expressing frustration": {
     "d\u00e9jame en paz": "leave me alone",
@@ -251,8 +247,8 @@
     "el verano": "summer",
     "la primavera": "spring",
     "el oto\u00f1o": "autumn",
-    "last_visited": "2023-05-05-18-34-45",
-    "times_visited": 6
+    "last_visited": "2023-05-05-10-08-21",
+    "times_visited": 18
   },
   "interests 1": {
     "\u00bfqu\u00e9 os interesa?": "what are you guys interested in?",

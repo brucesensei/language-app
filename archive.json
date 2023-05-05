@@ -2,5 +2,12 @@
   "dummy data": {
     "trabajar": "to work",
     "estudiar": "to study"
+  },
+  "bad data": {
+    "la comida": "the food",
+    "la cena": "the dinner",
+    "el restaurante": "the restaurant",
+    "last_visited": "2023-05-05-20-23-42",
+    "times_visited": 1
   }
-}  
+}
