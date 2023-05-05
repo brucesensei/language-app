@@ -28,16 +28,12 @@ def create_dict(new_data):
     i += 2
   return new_dict
 
-
-#------------------------------DISPLAY FUNCTIONS------------------------------------ #
-
 def display_lessons(title, display_list, dictionary):
   """displays a list of lessons"""
   print(f'''
 {title.upper()}
 {"=" * len(title)}
-''')
-  
+''')  
   counter = 1
   for i in display_list:
     if 'times_visited' in dictionary[i]:
@@ -49,8 +45,7 @@ def display_lessons(title, display_list, dictionary):
     else:
       print(f'{counter} {i.upper()}')
     counter += 1
-
-
+    
 def get_user_choice(option_list):  
   while True:
     valid_choices = [str(i+1) for i in range(len(option_list))]
@@ -58,8 +53,6 @@ def get_user_choice(option_list):
     if user_choice not in valid_choices:
       continue
     return user_choice
-
-
 
 def menu(options, title=''):
   """reusable menu function that takes the menu options as a list"""
@@ -77,7 +70,6 @@ def menu(options, title=''):
       print(f'''{counter}   {option}''')
       counter += 1
 
-
 def display_learning_module(user_choice, display_list, spanish_dict):
   """Display the learning module title and justified list of vocabulary"""
   title = display_list[int(user_choice) - 1]
@@ -87,26 +79,17 @@ def display_learning_module(user_choice, display_list, spanish_dict):
     if k != 'times_visited' and k != 'last_visited':
       print(k + ' ' + '.' * (80 - len(k) - len(v)) + ' ' + v + '\n')
 
-def update_learning_data(user_choice, display_list, spanish_dict):  
-  # Gets the currently selected dictionary and updated metadata
+def update_learning_data(user_choice, display_list, spanish_dict):
   lesson = display_list[int(user_choice) - 1]
   time_obj = datetime.now()
-  
-  # sets the access time and stores it as a string
   time_string = time_obj.strftime("%Y-%m-%d-%H-%M-%S")  
   spanish_dict[lesson]['last_visited'] = time_string
-  
-  # checks if times_visited exists and either sets the value to inital 1 or advances the counter
   if 'times_visited' in spanish_dict[lesson]:
     spanish_dict[lesson]['times_visited'] += 1
   else:
     spanish_dict[lesson]['times_visited'] = 1
-    
-  # writes the updated file to learning.json
   with io.open('learning.json', 'w', encoding='utf8') as outfile:
       json.dump(spanish_dict, outfile, indent=2)
-
-
 
 def remove_lesson(user_choice, display_list):
   user_choice = get_user_choice(display_list)
@@ -119,13 +102,10 @@ def remove_lesson(user_choice, display_list):
   print(f"{to_remove} has been removed.")
   sleep(1)
 
-# -------------------------------practice vacabulary----------------------------------------- #
-
 def get_sanitized_lesson(user_choice, display_list, spanish_dict):
   """Returns lesson cleaed of meta data to be used in for review"""
   lesson = display_list[int(user_choice) - 1]
   practice_dict = spanish_dict[lesson]
-  
   if 'last_visited' in practice_dict:
     del practice_dict['last_visited']
   if 'times_visited' in practice_dict:
@@ -203,7 +183,7 @@ def practice_vocab(dictionary, again=[], reversed=''):
 
 
 
-# --------------------------------------MAIN FUNCTIONS------------------------------------------
+# --------------------------------------MAIN FUNCTIONS------------------------------------------ #
 
 def choose_lesson():
     spanish_dict = get_data('learning.json')
@@ -290,17 +270,8 @@ def quit_app():
   sleep(1)
   sys.exit()
 
-
-choices = {
-  '1': choose_lesson,
-  '2': view_archive,
-  '3': archive_lesson,
-  '4': restore_lesson,
-  '5': add_lesson,
-  '6': delete_lesson,
-  '7': quit_app
-}
-
+choices = {'1': choose_lesson,'2': view_archive,'3': archive_lesson,'4': 
+  restore_lesson,'5': add_lesson,'6': delete_lesson,'7': quit_app}
 
 def main():
   while True:
