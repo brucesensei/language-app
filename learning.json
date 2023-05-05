@@ -179,7 +179,9 @@
     "no tengo ni idea": "I have no idea",
     "habla demasiado r\u00e1pido": "you speak too quickly",
     "\u00bfpuede hablar m\u00e1s despacio, por favor?": "can you speak slower, please?",
-    "\u00bfc\u00f3mo se dice ... en espa\u00f1ol?": "how do you say ... in Spanish?"
+    "\u00bfc\u00f3mo se dice ... en espa\u00f1ol?": "how do you say ... in Spanish?",
+    "last_visited": "2023-05-05-13-05-45",
+    "times_visited": 2
   },
   "How Are You? 1": {
     "\u00bfc\u00f3mo est\u00e1s?": "how are you?",
@@ -327,5 +329,12 @@
     "porque": "because",
     "last_visited": "2023-05-05-09-12-04",
     "times_visited": 2
+  },
+  "restaurant basics": {
+    "la comida": "the food",
+    "la cena": "the dinner",
+    "el restaurante": "the restaurant",
+    "la mesa": "the table",
+    "mesa para dos, por favor": "table for two, please"
   }
 }
