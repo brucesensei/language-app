@@ -72,24 +72,32 @@ def display_options(options):
 
 # ----------------------------MENU AND USER INPUT FUNCTIONS---------------------------------- #
 
-def get_user_choice(menu, extra_options=[]):
+def get_user_choice(option_list):
   """takes a menu list and optionaly a list of extras and returns the user choice"""  
   while True:
-    valid_choices = [str(i+1) for i in range(len(menu))]
-    valid_choices.extend(extra_options)
-    user_choice = input('Choose one. ')
+    valid_choices = [str(i+1) for i in range(len(option_list))]
+    user_choice = input('Choose an option ')
     if user_choice not in valid_choices:
       continue
     return user_choice
 
 # menu is dead!! replace all instances with display options
 
-def menu(options):
+def menu(options, title=''):
   """reusable menu function that takes the menu options as a list"""
-  counter = 1
-  for option in options:
-    print(f'''{counter}   {option}''')
-    counter += 1
+  if title != '': 
+    print(f'''
+{title.upper()}
+{"=" * len(title)}''')
+    counter = 1
+    for option in options:
+      print(f'''{counter}   {option}''')
+      counter += 1
+  else:
+    counter = 1
+    for option in options:
+      print(f'''{counter}   {option}''')
+      counter += 1
     
 #--------------------------MAIN LOGIC--------------------------------------- #
 
@@ -138,135 +146,129 @@ def remove_lesson(display_list):
 
 # -------------------------------practice vacabulary----------------------------------------- #
 
-def practice_vocab(user_choice, display_list, spanish_dict, again=[], reverse_dic=False):
-  # get the key from the display list to fetch the correct dictionary and store it in practice_dict
+def get_sanitized_lesson(user_choice, display_list, spanish_dict):
+  """Returns lesson cleaed of meta data to be used in for review"""
   lesson = display_list[int(user_choice) - 1]
   practice_dict = spanish_dict[lesson]
   
-  # remove metadata if present
   if 'last_visited' in practice_dict:
     del practice_dict['last_visited']
   if 'times_visited' in practice_dict:
     del practice_dict['times_visited']
-  
-  # if review list is empty, allow language choice. otherwise option is not available.
-  if len(again) == 0:
-    
-    # get language choice from the user
-    language_choices = ['Type Spanish words', 'type English words']
-    menu(language_choices)
-    reverse_choice = get_user_choice(language_choices)
-    
-    # reverse the dictionary
-    if reverse_choice == '1':
-      
-      # create switch to pass to pass back to the function on retry
-      reverse_dic = True
-  if reverse_dic:
+  return practice_dict
+
+def get_language():
+  """if Spanish is chosen it returns true to reverse the dicionary"""
+  language_choices = ['Type Spanish words', 'Type English words']
+  menu(language_choices, 'choose input language')
+  language = get_user_choice(language_choices)
+  if language == '1':
+    return True
+  return False
+
+def reverse_dicitonary(practice_dict):
     reversed = {}
     for k, v in practice_dict.items():
       reversed[v] = k
-    practice_dict = reversed
-  
-  # instantiate lists
-  review_list = []   # missed words
-  correct_list = []  # correct words
-  review_again = []  # list to use for follow up review training session
-  correct = 0        # display correct count to the user
-  
-  # if review list exists set training data to review otherwise use orriginal list
-  practice_list  = list(practice_dict.keys())
-  if len(again) != 0:
-    training_data = again
-  else:
-    training_data = practice_list
-    
-  # trainig loop runs while data exists in the list
+    return reversed
+
+def run_training(training_data, practice_dict):
+  incorrect, correct, review, correct_count = [], [], [], 0
+  print(f'Words to practice:  {len(training_data)}')
   while len(training_data) != 0:
     target = random.choice(training_data)
     print(target)
     answer = input()
-    
-    # move correct responses to correct_list and advances the correct counter by 1
     if answer == practice_dict[target]:
       print(f'\nCorrect    Words remaining: {len(training_data) - 1}')
-      correct_list.append(target)
-      correct += 1
-    
-    # moves incorrect responses to review list  
+      correct.append(target)
+      correct_count += 1  
     else:
-      print(f'\nThe correct answer is: {practice_dict[target]}    Words remaining: {len(training_data) - 1}')
-      review_list.append(target)
+      print(f'\nThe answer is: {practice_dict[target]}    Words remaining: {len(training_data) - 1}')
+      incorrect.append(target)
     training_data.remove(target)
-  print(f'\nTraining sessoin complete.   {correct}  of {len(review_list) + len(correct_list)}  correct.')
-  
-  # once list is consumed displays results to the user if review words exist otherwise returns to main
-  if len(review_list) != 0:
+  print(f'\nTraining sessoin complete.   {correct_count}  of {len(incorrect) + len(correct)}  correct.')
+  if len(incorrect) != 0:
     print('\nWords for review')
-    review_list = list(set(review_list))
-    for i in review_list:
+    incorrect = list(set(incorrect))
+    for i in incorrect:
       print(i + ' ' + '.' * (80 - len(i) - len(practice_dict[i])) + ' ' + practice_dict[i] + '\n')
+  else:
+    print('Perfect! Well done!')
+  correct = list(set(correct))
+  review.extend(incorrect)
+  review.extend(incorrect)
+  review.extend(correct)
+  random.shuffle(review)
+  return review
 
-    # display menu and get user response.
-    review = ['Review again', 'return to lesson']
-    menu(review)
-    review_choice = get_user_choice(review)
-    
-    # if review selected incorrect words are doubled and stored in review again list along
-    # with correct responses. The list is shuffled again for another training round.
-    if review_choice == '1':
-      correct_list = list(set(correct_list))
-      review_again.extend(review_list)
-      review_again.extend(review_list)
-      review_again.extend(correct_list)
-      random.shuffle(review_again)
+def practice_vocab(dictionary, again=[], reversed=''):
+  if len(again) == 0:
+    if get_language():
+      practice_dict = reverse_dicitonary(dictionary)
+      practice_list  = list(practice_dict.keys())
+      reversed = True
+    else:
+      practice_dict = dictionary 
+      practice_list = list(dictionary.keys())
+      reversed = False
+  if len(again) != 0: 
+    practice_dict = dictionary 
+    practice_list = again
+  review_words = run_training(practice_list, practice_dict)    
+  review_menu = ['Review again', 'return to lesson', 'Return to main menu']
+  menu(review_menu, title='')
+  review_choice = get_user_choice(review_menu)
+  if review_choice == '1':
+    practice_vocab(practice_dict, review_words, reversed)
+  if review_choice == '2':
+    if reversed:
+      dictionary = reverse_dicitonary(practice_dict)
+    practice_vocab(dictionary)
+
+
+def choose_lesson():
+    spanish_dict = get_data('learning.json')
+    display_list = list(spanish_dict.keys())
+    display_lessons('spanish lessons', display_list, spanish_dict)
+    user_choice = get_user_choice(display_list)  # get the lesson number
+    display_learning_module(user_choice, display_list, spanish_dict)  # display the lesson
+    update_learning_data(user_choice, display_list, spanish_dict)  # update lesson metadata
+    lesson_options = ['Practice unit', 'Return to main menu']
+    menu(lesson_options,title='')
+    lesson_choice = get_user_choice(lesson_options)
+    if lesson_choice == '1':
+      dictionary = get_sanitized_lesson(user_choice, display_list, spanish_dict)
+      practice_vocab(dictionary, again=[])
       
-      # runs the training function again
-      practice_vocab(user_choice, display_list, spanish_dict, review_again, reverse_dic)
-  
-def main_display(spanish_dict, display_list):
-    display_lessons('spanish lessons',display_list, spanish_dict)
-    main_options = ['enter the lesson number for review', 'a - add a new lesson', 'r - remove a lesson', 'q - quit']
-    display_options(main_options)
-    user_choice = get_user_choice(display_list, ['a', 'r', 'q'])
-    return user_choice
+def archive_lesson():
+  pass
+def add_lesson():
+  pass
+def delete_lesson():
+  pass
+def quit_app():
+  pass
 
 
+choices = {
+  '1': choose_lesson,
+  '2': archive_lesson,
+  '3': add_lesson,
+  '4': delete_lesson,
+  '5': quit_app
+}
 
-
-
-# ----------------------------------MAIN FUNCTION----------------------------------------
 
 def main():
   while True:
-    spanish_dict = get_data('learning.json')
-    display_list = list(spanish_dict.keys())
-    main_choice = main_display(spanish_dict, display_list)
-    
-    if main_choice == 'r':
-      remove_lesson(display_list)
-      continue
-    if main_choice == 'a':
-      add_lesson()
-      continue
-    if main_choice == 'q':
-      print('You are now leaving the land of learning.')
-      sleep(2)
-      sys.exit()
-    display_learning_module(main_choice, display_list, spanish_dict)
-    menu_options_2 = ['Practice unit', 'Return to main menu', 'quit']
-    menu(menu_options_2)
-    user_choice_1 = get_user_choice(menu_options_2)
-    update_learning_data(main_choice, display_list, spanish_dict)
-    if user_choice_1 == '2':
-      continue
-    if user_choice_1 == '3':
-      print('You are now leaving the land of learning.')
-      sleep(2)
-      sys.exit()
-    if user_choice_1 == '1':
-      practice_vocab(main_choice, display_list, spanish_dict, again=[])
-      continue
-  
+    menu_options = ['Choose a lesson', 'Archive a lesson', 'Add a lesson', 'Delete a lesson', 'Quit']
+    menu(menu_options, 'main menu')
+    user_choice = get_user_choice(menu_options)
+    option = choices.get(user_choice)
+    option()
+
+
+
 if __name__ == '__main__':
   main()
