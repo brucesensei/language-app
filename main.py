@@ -231,7 +231,7 @@ def choose_lesson():
     spanish_dict = get_data('learning.json')
     display_list = list(spanish_dict.keys())
     display_lessons('spanish lessons', display_list, spanish_dict)
-    user_choice = get_user_choice(display_list)  # get the lesson number
+    user_choice = get_user_choice(display_list)
     display_learning_module(user_choice, display_list, spanish_dict)  # display the lesson
     update_learning_data(user_choice, display_list, spanish_dict)  # update lesson metadata
     lesson_options = ['Practice unit', 'Return to main menu']
@@ -242,11 +242,34 @@ def choose_lesson():
       practice_vocab(dictionary, again=[])
       
 def archive_lesson():
-  pass
+  spanish_dict = get_data('learning.json')
+  display_list = list(spanish_dict.keys())
+  display_lessons('choose a lesson to archive', display_list, spanish_dict)
+  user_choice = get_user_choice(display_list)
+  lesson = display_list[int(user_choice) - 1]
+  print('lesson: ', lesson)
+  archivalbe_lesson = spanish_dict[lesson]
+  print('archivable_lesson: ', archivalbe_lesson)
+  del spanish_dict[lesson]
+  archive_dict = get_data('archive.json') 
+  archive_dict[lesson] = archivalbe_lesson
+  with io.open('archive.json', 'w', encoding='utf8') as outfile:
+      json.dump(spanish_dict, outfile, indent=2)
+  with io.open('learning.json', 'w', encoding='utf8') as outfile:
+      json.dump(spanish_dict, outfile, indent=2)  
+    
+  
 def add_lesson():
   pass
+
+
 def delete_lesson():
-  pass
+  spanish_dict = get_data('learning.json')
+  display_list = list(spanish_dict.keys())
+  display_lessons('spanish lessons', display_list, spanish_dict)
+  user_choice = get_user_choice(display_list)
+
+
 def quit_app():
   pass
 
@@ -267,8 +290,6 @@ def main():
     user_choice = get_user_choice(menu_options)
     option = choices.get(user_choice)
     option()
-
-
 
 if __name__ == '__main__':
   main()
