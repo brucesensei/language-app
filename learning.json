@@ -146,7 +146,9 @@
     "los carteristas": "the pickpocketers",
     "\u00a1cuidado!": "watch out!",
     "cuidado con los carteristas": "beware of pickpocketers",
-    "ten cuidado": "be careful"
+    "ten cuidado": "be careful",
+    "last_visited": "2023-05-06-11-23-27",
+    "times_visited": 1
   },
   "we can": {
     "poder": "be able to",
@@ -246,14 +248,6 @@
     "last_visited": "2023-05-05-10-16-44",
     "times_visited": 3
   },
-  "seasons": {
-    "el invierno": "winter",
-    "el verano": "summer",
-    "la primavera": "spring",
-    "el oto\u00f1o": "autumn",
-    "last_visited": "2023-05-05-10-08-21",
-    "times_visited": 18
-  },
   "interests 1": {
     "\u00bfqu\u00e9 os interesa?": "what are you guys interested in?",
     "gustar": "to like",
@@ -343,6 +337,29 @@
     "la mesa": "the table",
     "mesa para dos, por favor": "table for two, please",
     "last_visited": "2023-05-06-07-41-33",
+    "times_visited": 1
+  },
+  "seasons": {
+    "el invierno": "winter",
+    "el verano": "summer",
+    "la primavera": "spring",
+    "el oto\u00f1o": "autumn",
+    "last_visited": "2023-05-06-11-58-46",
+    "times_visited": 20
+  },
+  "ready to order? 1": {
+    "listo; lista": "ready; smart",
+    "pedir": "to order",
+    "tomar": "to take",
+    "est\u00e1is": "you are (plural informal; temporary)",
+    "estamos": "we are (temporary)",
+    "est\u00e1n": "you are (plural formal); they are (temporary)",
+    "quer\u00e9is": "you want (plural informal)",
+    "quieren": "you want (plural formal); they want",
+    "\u00bfest\u00e1is listos para pedir?": "are you ready to order?",
+    "\u00bfos han tomado nota?": "has somebody taken your order? (plural)",
+    "\u00bfqu\u00e9 quer\u00e9is tomar?": "what would you like to have?",
+    "last_visited": "2023-05-06-11-59-40",
     "times_visited": 1
   }
 }

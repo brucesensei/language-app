@@ -1,14 +1,32 @@
-la comida
-the food
+listo; lista
+ready; smart
 
-la cena
-the dinner
+pedir
+to order
 
-el restaurante
-the restaurant
+tomar
+to take
 
-la mesa
-the table
+estáis
+you are (plural informal; temporary)
 
-mesa para dos, por favor
-table for two, please
+estamos
+we are (temporary)
+
+están
+you are (plural formal); they are (temporary)
+
+queréis
+you want (plural informal)
+
+quieren
+you want (plural formal); they want
+
+¿estáis listos para pedir?
+are you ready to order?
+
+¿os han tomado nota?
+has somebody taken your order? (plural)
+
+¿qué queréis tomar?
+what would you like to have?
