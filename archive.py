@@ -7,6 +7,7 @@ def view_archive():
   archive_dict = helpers.get_data('archive.json')
   display_list = list(archive_dict.keys())
   helpers.display_lessons('archived lessons', display_list, archive_dict)
+  print()
   lesson_options = ['Return to main menu']
   helpers.menu(lesson_options,title='')
   lesson_choice = helpers.get_user_choice(lesson_options)
@@ -15,6 +16,7 @@ def archive_lesson():
   spanish_dict = helpers.get_data('learning.json')
   display_list = list(spanish_dict.keys())
   helpers.display_lessons('choose a lesson to archive', display_list, spanish_dict)
+  print('\nEnter the number of the lesson to archive.')
   user_choice = helpers.get_user_choice(display_list)
   lesson = display_list[int(user_choice) - 1]
   archivalbe_lesson = spanish_dict[lesson]
@@ -33,6 +35,7 @@ def restore_lesson():
   archive_dict = helpers.get_data('archive.json') 
   display_list = list(archive_dict.keys())
   helpers.display_lessons('choose a lesson to restore', display_list, archive_dict)
+  print('\nEnter the number of the lesson to restore.')
   user_choice = helpers.get_user_choice(display_list)
   lesson = display_list[int(user_choice) - 1]
   restoralbe_lesson = archive_dict[lesson]

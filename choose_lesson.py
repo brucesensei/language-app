@@ -77,10 +77,8 @@ def run_training(training_data, practice_dict):
       print(i + ' ' + '.' * (80 - len(i) - len(practice_dict[i])) + ' ' + practice_dict[i] + '\n')
   else:
     print('Perfect! Well done!')
-  correct = list(set(correct))
   review.extend(incorrect)
   review.extend(incorrect)
-  review.extend(correct)
   random.shuffle(review)
   return review
 
@@ -122,4 +120,4 @@ def main():
     lesson_choice = helpers.get_user_choice(lesson_options)
     if lesson_choice == '1':
       dictionary = get_sanitized_lesson(user_choice, display_list, spanish_dict)
-      practice_vocab(dictionary, again=[])
+      practice_vocab(dictionary)

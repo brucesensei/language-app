@@ -12,7 +12,7 @@ def get_data(file_name):
 def get_user_choice(option_list):  
   while True:
     valid_choices = [str(i+1) for i in range(len(option_list))]
-    user_choice = input('Choose an option ')
+    user_choice = input('\nChoose an option ')
     if user_choice not in valid_choices:
       continue
     return user_choice
@@ -20,7 +20,7 @@ def get_user_choice(option_list):
 def menu(options, title=''):
   """reusable menu function that takes the menu options as a list"""
   if title != '': 
-    print(f'''
+    print(f'''\n
 {title.upper()}
 {"=" * len(title)}''')
     counter = 1

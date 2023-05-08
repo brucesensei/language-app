@@ -21,18 +21,17 @@ def write_data(file_name, dictionary):
 #=============================MAIN EXPORT FUNCTION====================#
 
 def main():
-  null_value = input('Copy data to the clipboard and press enter.')
-  new_entry = pc.paste()
-  with io.open('new_data.txt','w',encoding='utf8') as f:
-      f.write(new_entry)
-  with io.open('new_data.txt','r',encoding='utf8') as f:
-      data = f.read()
-  data = data.split('\n')
-  new_data = [i for i in data if i != '']
-  new_dict = create_dict(new_data)
-  lesson_data = helpers.get_data('learning.json')
-  title = input('Enter the unit title: \n')
-  lesson_data[title] = new_dict
-  write_data('learning.json', lesson_data)
-  print('Lesson has been added')
-  sleep(1)  
+    null_value = input('Copy data to the clipboard and press enter.')
+    new_entry = pc.paste()
+    with io.open('new_data.txt','w',encoding='utf8') as f:
+        f.write(new_entry)
+    with io.open('new_data.txt','r',encoding='utf8') as f:
+        data = f.read()
+    data = data.splitlines()
+    new_data = [i for i in data if i != '']
+    new_dict = create_dict(new_data)
+    lesson_data = helpers.get_data('learning.json')
+    title = input('Enter the unit title: \n')
+    lesson_data[title] = new_dict
+    write_data('learning.json', lesson_data)
+    print(f'{title.upper()} has been added')

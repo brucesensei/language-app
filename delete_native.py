@@ -14,6 +14,7 @@ def main():
   archive_dict = helpers.get_data('archive.json')
   display_list = list(archive_dict.keys())
   helpers.display_lessons('choose a lesson to delete', display_list, archive_dict)
+  print('\nChoose the lesson number to delete.')
   user_choice = helpers.get_user_choice(display_list)
   remove_lesson(user_choice, display_list, archive_dict)
   
