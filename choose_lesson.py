@@ -100,6 +100,8 @@ def practice_vocab(dictionary, again=[], reversed=''):
   helpers.menu(review_menu, title='')
   review_choice = helpers.get_user_choice(review_menu)
   if review_choice == '1':
+    if len(review_words) == 0:
+      print('There are no words that need review.')
     practice_vocab(practice_dict, review_words, reversed)
   if review_choice == '2':
     if reversed:
@@ -109,15 +111,25 @@ def practice_vocab(dictionary, again=[], reversed=''):
 #============================MAIN EXPORT FUNCTION=========================#
 
 def main():
+  
+  # Gets the learning data keys and displays them to the user
+  # gets the lesson for review or returns user to main menu
     spanish_dict = helpers.get_data('learning.json')
     display_list = list(spanish_dict.keys())
     helpers.display_lessons('spanish lessons', display_list, spanish_dict)
-    user_choice = helpers.get_user_choice(display_list)
+    print('\n"r"  Return to the main menu.')
+    user_choice = helpers.get_user_choice(display_list,['r'])
+    if user_choice == 'r':
+      return
+    
+    # gets the unit from the user and displays it with choice to practice or return 
     display_learning_module(user_choice, display_list, spanish_dict)
     update_learning_data(user_choice, display_list, spanish_dict)
     lesson_options = ['Practice unit', 'Return to main menu']
     helpers.menu(lesson_options,title='')
     lesson_choice = helpers.get_user_choice(lesson_options)
     if lesson_choice == '1':
+      
+      # Removes metdata from the lesson and enters practice sesson
       dictionary = get_sanitized_lesson(user_choice, display_list, spanish_dict)
       practice_vocab(dictionary)

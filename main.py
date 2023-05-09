@@ -21,6 +21,7 @@ choices = {'1': choose_lesson.main,
            }
 
 def main():
+  print('hello from main main')
   while True:
     menu_options = ['Choose a lesson', 'View archive', 'Archive a lesson', 'Restore a lesson', 'Add a lesson', 'Delete a lesson', 'Quit']
     helpers.menu(menu_options, 'main menu')

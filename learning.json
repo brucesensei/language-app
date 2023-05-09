@@ -2090,5 +2090,10 @@
     "ese no es el collar de mi abuela": "that isn't my grandma's necklace",
     "ahora es la casa de Jose": "this is Jose's house now",
     "este es el color favorito de mi padre": "this is my father's favourite colour"
+  },
+  "synonyms": {
+    "ambivalent": "hesitant",
+    "obsequious": "obedient",
+    "posh": "stylish"
   }
 }

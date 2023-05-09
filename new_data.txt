@@ -1,11 +1,8 @@
-apple
-ringo
+ambivalent
+hesitant
 
-grape
-budou
+obsequious
+obedient
 
-peach
-momo
-
-watermellon
-suica
+posh
+stylish

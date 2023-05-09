@@ -1,9 +1,9 @@
 {
-  "bad data": {
-    "la comida": "the food",
-    "la cena": "the dinner",
-    "el restaurante": "the restaurant",
-    "last_visited": "2023-05-05-20-23-42",
+  "fruit": {
+    "apple": "ringo",
+    "peach": "momo",
+    "grape": "budou",
+    "last_visited": "2023-05-09-14-58-12",
     "times_visited": 1
   }
 }

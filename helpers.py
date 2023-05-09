@@ -9,9 +9,10 @@ def get_data(file_name):
     data = json.loads(data)
     return data
   
-def get_user_choice(option_list):  
+def get_user_choice(option_list, extras =[]):
   while True:
     valid_choices = [str(i+1) for i in range(len(option_list))]
+    valid_choices.extend(extras)
     user_choice = input('\nChoose an option ')
     if user_choice not in valid_choices:
       continue
